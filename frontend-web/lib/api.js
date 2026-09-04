@@ -5,9 +5,20 @@ function authHeaders() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+async function throwWithDetail(res, fallback) {
+  let detail = fallback;
+  try {
+    const body = await res.json();
+    detail = body.detail || JSON.stringify(body);
+  } catch {
+    // response wasn't JSON, keep fallback
+  }
+  throw new Error(`${detail} (HTTP ${res.status})`);
+}
+
 export async function listCharacters(vertical) {
   const res = await fetch(`${API_BASE}/api/${vertical}/characters`, { headers: authHeaders() });
-  if (!res.ok) throw new Error("Failed to load characters");
+  if (!res.ok) await throwWithDetail(res, "Failed to load characters");
   return res.json();
 }
 
@@ -16,7 +27,7 @@ export async function startSession(vertical, characterId) {
     method: "POST",
     headers: authHeaders(),
   });
-  if (!res.ok) throw new Error("Failed to start session");
+  if (!res.ok) await throwWithDetail(res, "Failed to start session");
   return res.json();
 }
 
@@ -25,13 +36,13 @@ export async function sendMessage(vertical, sessionId, content) {
     `${API_BASE}/api/${vertical}/sessions/${sessionId}/messages?content=${encodeURIComponent(content)}`,
     { method: "POST", headers: authHeaders() }
   );
-  if (!res.ok) throw new Error("Failed to send message");
+  if (!res.ok) await throwWithDetail(res, "Failed to send message");
   return res.json();
 }
 
 export async function getProgress(vertical) {
   const res = await fetch(`${API_BASE}/api/${vertical}/progress`, { headers: authHeaders() });
-  if (!res.ok) throw new Error("Failed to load progress");
+  if (!res.ok) await throwWithDetail(res, "Failed to load progress");
   return res.json();
 }
 
@@ -40,6 +51,6 @@ export async function signup(email, password, name, vertical) {
     `${API_BASE}/api/auth/signup?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&name=${encodeURIComponent(name)}&vertical=${vertical}`,
     { method: "POST" }
   );
-  if (!res.ok) throw new Error("Signup failed");
+  if (!res.ok) await throwWithDetail(res, "Signup failed");
   return res.json();
 }

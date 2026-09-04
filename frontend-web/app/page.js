@@ -9,7 +9,13 @@ const VERTICALS = [
 export default function Home() {
   return (
     <main style={{ padding: 40, maxWidth: 720, margin: "0 auto" }}>
-      <h1>Choose a vertical</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1 style={{ margin: 0 }}>Choose a vertical</h1>
+        <Link href="/signup" style={{ padding: "8px 16px", border: "1px solid #333", borderRadius: 8 }}>
+          Sign up
+        </Link>
+      </div>
+      <p style={{ color: "#666" }}>You need an account before chatting — sign up first if you haven't.</p>
       <div style={{ display: "grid", gap: 16, marginTop: 24 }}>
         {VERTICALS.map((v) => (
           <Link
