@@ -62,3 +62,5 @@ frontend-mobile/        # Expo React Native (Phase 4)
 2. Wire `core/memory.py` and `routers/voice.py` to real OpenAI/ElevenLabs keys and test round-trip.
 3. Build `sessions`/`messages` endpoints (referenced in the API reference doc, not yet implemented here).
 4. Scaffold `frontend-web` (Next.js) and `frontend-mobile` (Expo) — Phase 4.
+
+<!-- deploy retry -->
