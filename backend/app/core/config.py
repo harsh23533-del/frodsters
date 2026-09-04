@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     openrouter_api_key: str = ""
     elevenlabs_api_key: str = ""
     whisper_mode: str = "openai"
+    cors_allowed_origins: str = "http://localhost:3000"
 
     class Config:
         env_file = ".env"
